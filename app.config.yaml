@@ -1,0 +1,62 @@
+application:
+  actions: actions
+  runtimeManifest:
+    packages:
+      adobe-commerce-app-builder:
+        license: Apache-2.0
+        actions:
+          catalogprice:
+            function: actions/catalogprice/index.js
+            web: 'no'
+            runtime: nodejs:16
+            inputs:
+              LOG_LEVEL: debug
+            annotations:
+              require-adobe-auth: false
+              final: true
+      adobe-commerce-order-event:
+        license: Apache-2.0
+        actions:
+          event_consumer:
+            function: actions/event_consumer/index.js
+            web: 'yes'
+            runtime: 'nodejs:14'
+            inputs:
+              LOG_LEVEL: debug
+              apiKey: $SERVICE_API_KEY
+              providerId: $PROVIDER_ID
+              integration_id: $EVENT_INTEGRATION_ID
+              eventCode: $EVENT_CODE
+              client_id: $CLIENT_ID
+              client_secret: $CLIENT_SECRET
+              technical_account_email: $TECH_ACCOUNT_EMAIL
+              technical_account_id: $TECH_ACCOUNT_ID
+              ims_org_id: $IMS_ORG_ID
+              private_key: $PRIVATE_KEY
+              journalling_url: $JOURNALLING_URL
+              db_event_key: $DB_EVENT_KEY
+              max_events_in_batch: $MAX_EVENTS_IN_BATCH
+              external_webhook: $EXTERNAL_WEBHOOK
+            annotations:
+              final: true
+        triggers:
+          everyMin:
+            feed: /whisk.system/alarms/interval
+            inputs:
+              minutes: 1
+        rules:
+          everyMinRule:
+            trigger: everyMin
+            action: event_consumer
+      external-sales-order:
+        license: Apache-2.0
+        actions:
+          externalsalesorder:
+            function: actions/externalsalesorder/index.js
+            web: 'no'
+            runtime: nodejs:16
+            inputs:
+              LOG_LEVEL: debug
+            annotations:
+              require-adobe-auth: false
+              final: true
