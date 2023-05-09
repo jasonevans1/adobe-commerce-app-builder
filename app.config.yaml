@@ -60,3 +60,6 @@ application:
             annotations:
               require-adobe-auth: false
               final: true
+extensions:
+  dx/excshell/1:
+    $include: ext.config.yaml
