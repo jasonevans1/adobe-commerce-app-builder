@@ -1,5 +1,3 @@
-# 498OrangeScallop
-
 Welcome to my Adobe I/O Application!
 
 ## Setup
